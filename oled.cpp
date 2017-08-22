@@ -49,5 +49,5 @@ int main( int argc, char * argv [] ) {
 		sprintf (buffer, "LINE %c", i + 64);
 		myDisplay.textDisplay(buffer);
 	}
-	*/
+*/	
 }

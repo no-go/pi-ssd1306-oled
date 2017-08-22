@@ -1,3 +1,7 @@
+// Ken Hughes
+// July 2016
+// Modified for 128x32 by Jochen Peters Krefeld (Aug 2017)
+
 #include <ctype.h>
 #include "charmap.h"
 #include "ssd1306.h"
@@ -9,7 +13,7 @@
 #endif
 
     SSD1306::SSD1306() {
-        for(int i=0; i<8; i++)
+        for(int i=0; i<4; i++)
         {
             for(int j=0; j<128; j++)
             {
@@ -61,7 +65,7 @@
                     {
                         scrollUp(1);
                     } 
-                    if (currentLine > 7) 
+                    if (currentLine > 3) 
                     { 
                         currentLine = 0;  
                         needScroll = TRUE;                  
@@ -81,7 +85,7 @@
         // now point to next line and set to first char
         currByteCount = 0;
         currentLine++;
-        if(currentLine > 7) 
+        if(currentLine > 3) 
         { 
             currentLine = 0;
             needScroll = TRUE;
@@ -92,7 +96,7 @@
 
     void SSD1306::clearDisplay() {
         // blank out the line buffers
-        for(int i=0; i<8; i++)
+        for(int i=0; i<4; i++)
         {
             for(int j=0; j<128; j++)
             {
@@ -121,8 +125,8 @@
             initDisplay();
         }
         currentScrollLine += lines;
-        if (currentScrollLine > 7) { currentScrollLine -= 8; }
-        scrollUpSequence[2] = currentScrollLine * 8;
+        if (currentScrollLine > 3) { currentScrollLine -= 4; }
+        scrollUpSequence[2] = currentScrollLine * 4;
         D printf("scrollUp\n");
 		writeI2C(scrollUpSequence, 3);
     }
@@ -167,7 +171,7 @@
 
     void SSD1306::updateDisplayFull() {
         setDisplayRange(-1);
-        for(int line=0; line<8; line++)
+        for(int line=0; line<4; line++)
         {
             unsigned char buffer[129] = {0};
             buffer[0] = 0x40;
@@ -180,8 +184,8 @@
 
     void SSD1306::writeI2C(unsigned char* data, int bytes) {
         char *deviceName = (char*)"/dev/i2c-1";
-	    if ((i2cHandle = open(deviceName, O_RDWR)) < 0)
-	    {
+        if ((i2cHandle = open(deviceName, O_RDWR)) < 0)
+	{
             printf("error opening I2C\n");
         }
         else

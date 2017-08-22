@@ -1,5 +1,6 @@
 // Ken Hughes
 // July 2016
+// Modified for 128x32 by Jochen Peters Krefeld (Aug 2017)
 
 
 #include <unistd.h>//Needed for I2C port
@@ -36,8 +37,8 @@ class SSD1306
         void setDisplayMode(SSD1306::Mode);
 
     private:
-        // line buffers (128 chars * 8 lines)
-    	unsigned char displayLines[8][128];
+        // line buffers (128 chars * 4 lines)
+    	unsigned char displayLines[4][128];
     	int currentLine = 0;
         int wordWrap = FALSE;
         int displayMode = Mode::SCROLL;
@@ -50,12 +51,12 @@ class SSD1306
     	int i2cAddress = 0x3C;
 
         // ssd1306 command sequences
-        unsigned char initSequence[26] = {0x00,0xAE,0xA8,0x3F,0xD3,0x00,0x40,0xA1,0xC8,0xDA,0x12,0x81,0x7F,
+        unsigned char initSequence[26] = {0x00,0xAE,0xA8,0x1F,0xD3,0x00,0x40,0xA1,0xC8,0xDA,0x02,0x81,0x8F,
                                           0xA4,0xA6,0xD5,0x80,0x8D,0x14,0xD9,0x22,0xD8,0x30,0x20,0x00,0xAF};
 
-    	unsigned char setFullRange[7] = {0x00,0x21,0x00,0x7F,0x22,0x00,0x07};
+    	unsigned char setFullRange[7] = {0x00,0x21,0x00,0x7F,0x22,0x00,0x03};
 
-        unsigned char scrollUpSequence[3] = {0x00,0xD3,0x08};
+        unsigned char scrollUpSequence[3] = {0x00,0xD3,0x04};
 
         // helper functions
         int addFontBytes(int curr, unsigned char c);
