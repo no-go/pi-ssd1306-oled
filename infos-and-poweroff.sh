@@ -14,7 +14,6 @@ fi
 IPADDR=$(hostname -I | cut -d' ' -f1)
 CPULOAD=$(top -bn1 | grep load | tr , . | awk '{printf "%5.2f", $(NF-2)}')
 NOWTIME=$(date +'%H:%M')
-PIHOLE=$(curl -s http://127.0.0.1/admin/api.php | tr -d '{}\"' | tr ',' '\n' | tr ':' ' ')
 THEGPIO=$(cat /sys/class/gpio/gpio27/value)
 FREEDISK=$(($(stat -f --format="%a*%S/(1024*1024)" /)))
 
